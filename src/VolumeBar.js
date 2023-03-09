@@ -1,27 +1,34 @@
-import React, { Component } from 'react'
+import React from "react";
 
-class VolumeBar extends Component {
-    volumeChageHanlder = (e, video) => {
-        const percent = e.nativeEvent.offsetX / e.target.offsetWidth;
-        video.volume = percent
-        this.forceUpdate()
-    }
-
-    render() {
-        const { video, styles: style } = this.props
-
-        return (
-            <progress
-                onClick={(e) => this.volumeChageHanlder(e, video)}
-                min='0'
-                max='1'
-                value={video.volume}
-                style={{
-                    ...style.progress,
-                    ...style.progressVol
-                }}
-            ></progress>
-        )
-    }
+interface VolumeBarProps {
+  video: HTMLVideoElement;
+  styles: {
+    progress: React.CSSProperties,
+    progressVol: React.CSSProperties,
+  };
 }
-export default VolumeBar
+
+function VolumeBar({ video, styles }: VolumeBarProps) {
+  const volumeChangeHandler = (
+    e: React.MouseEvent<HTMLProgressElement>,
+    video: HTMLVideoElement
+  ) => {
+    const percent = e.nativeEvent.offsetX / e.currentTarget.offsetWidth;
+    video.volume = percent;
+  };
+
+  return (
+    <progress
+      onClick={(e) => volumeChangeHandler(e, video)}
+      min="0"
+      max="1"
+      value={video.volume}
+      style={{
+        ...styles.progress,
+        ...styles.progressVol,
+      }}
+    ></progress>
+  );
+}
+
+export default VolumeBar;
