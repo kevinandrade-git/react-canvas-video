@@ -16,7 +16,7 @@ var CanvasVideo = function (_Component) {
   _inherits(CanvasVideo, _Component);
 
   function CanvasVideo() {
-    var _temp, _this, _ret;
+    var _temp, _this2, _ret;
 
     _classCallCheck(this, CanvasVideo);
 
@@ -24,56 +24,60 @@ var CanvasVideo = function (_Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.startPlayingInCanvas = function (video, canvasRef, _ref) {
+    return _ret = (_temp = (_this2 = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this2), _this2.startPlayingInCanvas = function (video, canvasRef, _ref) {
       var ratio = _ref.ratio,
           autoplay = _ref.autoplay;
 
       var context = canvasRef.getContext("2d");
       canvasRef.width = canvasRef.clientWidth;
       canvasRef.height = canvasRef.clientWidth / ratio;
-      _this.playListener = function () {
-        _this.draw(video, context, canvasRef.width, canvasRef.height);
+      _this2.playListener = function () {
+        _this2.draw(video, context, canvasRef.width, canvasRef.height);
       };
-      video.addEventListener("play", _this.playListener, false);
+      video.addEventListener("play", _this2.playListener, false);
       if (autoplay) video.play();
-    }, _this.makeVirtualVideoElement = function (src) {
+    }, _this2.makeVirtualVideoElement = function (src) {
       var video = document.createElement("video");
       var source = document.createElement("source");
       source.setAttribute("src", src);
       video.appendChild(source);
       return video;
-    }, _this.draw = function (video, context, canvasWidth, canvasHeight) {
+    }, _this2.draw = function (video, context, canvasWidth, canvasHeight) {
       context.drawImage(video, 0, 0, canvasWidth, canvasHeight);
-      _this.drawText(context, video, canvasWidth, canvasHeight);
-      if (!video.paused && !video.ended) setTimeout(_this.draw, 1000 / 24, video, context, canvasWidth, canvasHeight);
-    }, _this.drawText = function (context, video, canvasWidth, canvasHeight) {
-      if (_this.props.options && _this.props.options.watermark != undefined) {
-        context.font = "bold 12px Arial";
+      _this2.drawText(context, video, canvasWidth, canvasHeight);
+      if (!video.paused && !video.ended) setTimeout(_this2.draw, 1000 / 24, video, context, canvasWidth, canvasHeight);
+    }, _this2.drawText = function (context, video, canvasWidth, canvasHeight) {
+      if (_this2.props.options && _this2.props.options.watermark != undefined) {
+        context.font = "bold 30px Arial";
 
         var _context$measureText = context.measureText(_this.props.options.watermark),
             textWidth = _context$measureText.width,
             actualBoundingBoxAscent = _context$measureText.actualBoundingBoxAscent;
 
-        var xStep = textWidth;
-        var yStep = actualBoundingBoxAscent * 1.5;
+        var xStep = textWidth + 3;
+        var yStep = Math.abs(actualBoundingBoxAscent * 1.5);
 
+        var originalFillStyle = context.fillStyle;
         for (var x = 0; x < canvasWidth; x += xStep) {
           for (var y = 0; y < canvasHeight; y += yStep) {
-            context.globalAlpha = 0.4;
+            context.globalAlpha = 0.3;
+            ctx.fillStyle = "black";
             context.fillText(_this.props.options.watermark, x, y);
             context.globalAlpha = 1;
+
+            context.fillStyle = originalFillStyle;
           }
         }
       }
-      if (_this.props.options && _this.props.options.text !== undefined && video.currentTime % (5 * 60) < 5) {
+      if (_this2.props.options && _this2.props.options.text !== undefined && video.currentTime % (5 * 60) < 5) {
         context.font = canvasHeight / 20 + "px Arial";
         context.fillStyle = "rgba(255,255,255,0.5)";
         context.textAlign = "center";
-        context.fillText(_this.props.options.text, canvasWidth / 2, canvasHeight / 20);
+        context.fillText(_this2.props.options.text, canvasWidth / 2, canvasHeight / 20);
       }
-    }, _this.onPlayPauseHandler = function (e) {
-      _this.virtualVideoElement.paused ? _this.virtualVideoElement.play() : _this.virtualVideoElement.pause();
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+    }, _this2.onPlayPauseHandler = function (e) {
+      _this2.virtualVideoElement.paused ? _this2.virtualVideoElement.play() : _this2.virtualVideoElement.pause();
+    }, _temp), _possibleConstructorReturn(_this2, _ret);
   }
 
   CanvasVideo.prototype.componentWillMount = function componentWillMount() {
@@ -95,11 +99,11 @@ var CanvasVideo = function (_Component) {
   };
 
   CanvasVideo.prototype.render = function render() {
-    var _this2 = this;
+    var _this3 = this;
 
     var combinedStyles = {};
     Object.keys(style).forEach(function (key) {
-      combinedStyles[key] = _extends({}, style[key], _this2.props.styles ? _this2.props.styles[key] : {});
+      combinedStyles[key] = _extends({}, style[key], _this3.props.styles ? _this3.props.styles[key] : {});
     });
 
     return React.createElement(
@@ -107,7 +111,7 @@ var CanvasVideo = function (_Component) {
       { style: combinedStyles.canvasContainer },
       React.createElement("canvas", {
         ref: function ref(canvasRef) {
-          return _this2.canvasRef = canvasRef;
+          return _this3.canvasRef = canvasRef;
         },
         style: _extends({
           width: "100%"
