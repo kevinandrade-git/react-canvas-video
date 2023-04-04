@@ -64,19 +64,26 @@ class CanvasVideo extends Component {
 
   drawText = (context, video, canvasWidth, canvasHeight) => {
     if (this.props.options && this.props.options.watermark != undefined) {
-      context.font = "bold 12px Arial";
-      const { width: textWidth, actualBoundingBoxAscent } = context.measureText(
-        this.props.options.watermark
-      );
+      context.font = "bold 30px Arial";
 
-      const xStep = textWidth;
-      const yStep = actualBoundingBoxAscent * 1.5;
+      var _context$measureText = context.measureText(
+          _this.props.options.watermark
+        ),
+        textWidth = _context$measureText.width,
+        actualBoundingBoxAscent = _context$measureText.actualBoundingBoxAscent;
 
-      for (let x = 0; x < canvasWidth; x += xStep) {
-        for (let y = 0; y < canvasHeight; y += yStep) {
-          context.globalAlpha = 0.4;
-          context.fillText(this.props.options.watermark, x, y);
+      var xStep = textWidth + 3;
+      var yStep = Math.abs(actualBoundingBoxAscent * 1.5);
+
+      var originalFillStyle = context.fillStyle;
+      for (var x = 0; x < canvasWidth; x += xStep) {
+        for (var y = 0; y < canvasHeight; y += yStep) {
+          context.globalAlpha = 0.3;
+          ctx.fillStyle = "black";
+          context.fillText(_this.props.options.watermark, x, y);
           context.globalAlpha = 1;
+
+          context.fillStyle = originalFillStyle;
         }
       }
     }
