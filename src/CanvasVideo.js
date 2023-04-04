@@ -72,7 +72,7 @@ class CanvasVideo extends Component {
       const xStep = textWidth;
       const yStep = Math.abs(actualBoundingBoxAscent * 1.5);
 
-      context.globalAlpha = 0.4;
+      context.globalAlpha = 0.4 ;
       for (let x = 0; x < canvasWidth; x += xStep) {
         for (let y = 0; y < canvasHeight; y += yStep) {
           context.fillText(this.props.options.watermark, x, y);
