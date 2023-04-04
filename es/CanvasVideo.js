@@ -48,7 +48,7 @@ var CanvasVideo = function (_Component) {
       if (!video.paused && !video.ended) setTimeout(_this.draw, 1000 / 24, video, context, canvasWidth, canvasHeight);
     }, _this.drawText = function (context, video, canvasWidth, canvasHeight) {
       if (_this.props.options && _this.props.options.watermark != undefined) {
-        context.font = "bold 30px Arial";
+        context.font = "bold " + canvasHeight / 40 + "px Arial";
 
         var _context$measureText = context.measureText(_this.props.options.watermark),
             textWidth = _context$measureText.width,

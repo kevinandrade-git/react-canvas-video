@@ -64,7 +64,7 @@ class CanvasVideo extends Component {
 
   drawText = (context, video, canvasWidth, canvasHeight) => {
     if (this.props.options && this.props.options.watermark != undefined) {
-      context.font = "bold 30px Arial";
+      context.font = `bold ${canvasHeight / 40}px Arial`;
       const { width: textWidth, actualBoundingBoxAscent } = context.measureText(
         this.props.options.watermark
       );
